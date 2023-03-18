@@ -1,5 +1,7 @@
 # MakeLink
 
+[![Build Status](https://dev.azure.com/michaelbosschert/MakeLink/_apis/build/status/Michron.MakeLink?branchName=main)](https://dev.azure.com/michaelbosschert/MakeLink/_build/latest?definitionId=2&branchName=main)
+
 MakeLink is a utility library that provides functionality for creating file system links. Currently only Directory Junctions are supported, and can only be created on NTSF file systems on Windows. Support for symbolic links and hard links has not been added yet.
 
 ## Main contents
@@ -16,6 +18,8 @@ MakeLink can be used in various ways, but the easiest are the following:
 * Add a `ProjectReference` in your own project for `src\MakeLink\MakeLink.csproj` by cloning the repository, or by adding it as a submodule in your own repository.
 
 ### Installation
+
+> **NOTE**: Global nuget package is not yet available. To add the package reference, the nuget has to be created manually and added to a custom nuget feed.
 
 ```bash
 dotnet add package MakeLink

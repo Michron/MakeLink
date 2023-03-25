@@ -1,6 +1,6 @@
 # MakeLink
 
-[![Build Status](https://dev.azure.com/michaelbosschert/MakeLink/_apis/build/status/Michron.MakeLink?branchName=main)](https://dev.azure.com/michaelbosschert/MakeLink/_build/latest?definitionId=2&branchName=main)
+[![Build Status](https://dev.azure.com/Michron/MakeLink/_apis/build/status/Michron.MakeLink?branchName=main)](https://dev.azure.com/Michron/MakeLink/_build/latest?definitionId=2&branchName=main)
 
 MakeLink is a utility library that provides functionality for creating file system links. Currently only Directory Junctions are supported, and can only be created on NTSF file systems on Windows. Support for symbolic links and hard links has not been added yet.
 

@@ -26,28 +26,28 @@ jobs:
     displayName: Build MakeLink
     inputs:
       command: 'build'
-      arguments: '--configuration ${{Configuration}}'
+      arguments: '--configuration $(Configuration)'
 
   - task: DotNetCoreCLI@2
     displayName: Test MakeLink
     inputs:
       command: 'test'
       projects: 'tests/MakeLink.UnitTests/MakeLink.UnitTests.csproj'
-      arguments: '--configuration ${{Configuration}} --no-build --collect "Code coverage"'
+      arguments: '--configuration $(Configuration) --no-build --collect "Code coverage"'
 
   - task: DotNetCoreCLI@2
     displayName: Pack Nuget
     inputs:
       command: 'pack'
       packagesToPack: 'src/MakeLink/MakeLink.csproj'
-      configuration: '${{Configuration}}'
+      configuration: '$(Configuration)'
       nobuild: true
-      includesymbols: ${{IsDebug}}
+      includesymbols: $(IsDebug)
       versioningScheme: 'off'
 
   - task: PublishBuildArtifacts@1
     displayName: Publish Nuget
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'Nuget-${{Configuration}}'
+      ArtifactName: 'Nuget-$(Configuration)'
       publishLocation: 'Container'

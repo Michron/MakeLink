@@ -1,19 +1,54 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
-pool:
-  vmImage: windows-latest
+jobs:
+- job:
+  displayName: Windows
+  pool:
+    vmImage: windows-latest
+  strategy:
+    matrix:
+      Debug:
+        Configuration: 'Debug'
+        IsDebug: true
+      Release:
+        Configuration: 'Release'
+        IsDebug: false
+    maxParallel: 1
+  steps:
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core SDK 7.0.202'
+    inputs:
+      packageType: 'sdk'
+      version: '7.0.202'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  - task: DotNetCoreCLI@2
+    displayName: Build MakeLink
+    inputs:
+      command: 'build'
+      arguments: '--configuration $(Configuration)'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - task: DotNetCoreCLI@2
+    displayName: Test MakeLink
+    inputs:
+      command: 'test'
+      projects: 'tests/MakeLink.UnitTests/MakeLink.UnitTests.csproj'
+      testRunTitle: 'MakeLink.UnitTests-$(Configuration)'
+      arguments: '--configuration $(Configuration) --no-build --collect "Code coverage"'
+
+  - task: DotNetCoreCLI@2
+    displayName: Pack Nuget
+    inputs:
+      command: 'pack'
+      packagesToPack: 'src/MakeLink/MakeLink.csproj'
+      configuration: '$(Configuration)'
+      nobuild: true
+      includesymbols: $(IsDebug)
+      versioningScheme: 'off'
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Nuget
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'Nuget-$(Configuration)'
+      publishLocation: 'Container'

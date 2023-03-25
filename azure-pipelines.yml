@@ -33,6 +33,7 @@ jobs:
     inputs:
       command: 'test'
       projects: 'tests/MakeLink.UnitTests/MakeLink.UnitTests.csproj'
+      testRunTitle: 'MakeLink.UnitTests-$(Configuration)'
       arguments: '--configuration $(Configuration) --no-build --collect "Code coverage"'
 
   - task: DotNetCoreCLI@2
